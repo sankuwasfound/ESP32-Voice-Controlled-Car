@@ -1,0 +1,77 @@
+#include "BluetoothSerial.h"
+
+BluetoothSerial SerialBT;
+
+// MOTOR PINS
+#define IN1 23
+#define IN2 22
+#define IN3 19
+#define IN4 18
+#define ENA 25
+#define ENB 26
+
+int speedVal = 130;
+
+void setup() {
+  Serial.begin(115200);
+  SerialBT.begin("ESP32-VOICE-CAR");
+
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
+
+  stopMotors();
+  Serial.println("Voice Car Ready");
+}
+
+void loop() {
+  if (SerialBT.available()) {
+    String cmd = SerialBT.readStringUntil('\n');
+    cmd.trim();
+    cmd.toLowerCase();
+
+    Serial.println(cmd);
+
+    if (cmd == "forward") moveForward();
+    else if (cmd == "back") moveBackward();
+    else if (cmd == "left") turnLeft();
+    else if (cmd == "right") turnRight();
+    else if (cmd == "stop") stopMotors();
+  }
+}
+
+void moveForward() {
+  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);
+  analogWrite(ENA, speedVal);
+  analogWrite(ENB, speedVal);
+}
+
+void moveBackward() {
+  digitalWrite(IN1, LOW); digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, LOW); digitalWrite(IN4, HIGH);
+  analogWrite(ENA, speedVal);
+  analogWrite(ENB, speedVal);
+}
+
+void turnLeft() {
+  digitalWrite(IN1, LOW); digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);
+}
+
+void turnRight() {
+  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW); digitalWrite(IN4, HIGH);
+}
+
+void stopMotors() {
+  analogWrite(ENA, 0);
+  analogWrite(ENB, 0);
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+}
