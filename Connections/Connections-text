@@ -1,0 +1,28 @@
+🔌 ESP32 ↔ L298N Motor Driver Connections
+IN1 → 23
+IN2 → 22
+IN3 → 19
+IN4 → 18
+ENA → 25
+ENB → 26
+
+🔧️ Control Pins (ESP32 → L298N)
+L298N Pin	Connect To ESP32
+IN1	GPIO 23
+IN2	GPIO 22
+IN3	GPIO 19
+IN4	GPIO 18
+ENA	GPIO 25
+ENB	GPIO 26
+
+🔋️ Power Connections (L298N Power Side)
+L298N	Connect To
+12V	Battery + (7–12V)
+GND	Battery -
+GND	ESP32 GND (IMPORTANT COMMON GROUND)
+
+🚗️ Motor Connections
+L298N	Connect To
+OUT1 + OUT2	Left Motor
+OUT3 + OUT4	Right Motor
+  
